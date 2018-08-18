@@ -167,10 +167,7 @@ class Grille:
                 # Case non remplie, donc on regarde (pour la case en position 'pos')
                 for num in range(1,10):
 
-                    # On pourrait utiliser le nombre 'num' s'il n'est :
-                    #
-
-
+                    # On vérifie si on peut utiliser 'num' dans la case 'pos'
                     if (self.est_possible(num, pos)):
                         nb_possibilites += 1
 
@@ -179,7 +176,9 @@ class Grille:
 
         # On a récupéré, pour chaque case, le nombre de choix possibles. 
         # On trie ce résultat selon le nombre de possibilités.
+
         ordre_cellules = []
+
         for possibilite in sorted(possibilite_grille.items(), key=operator.itemgetter(1)):
             cellule, poss = possibilite
             ordre_cellules.append(cellule)
@@ -345,6 +344,7 @@ def cherche(grille, ordre):
         print(grille)
         print()
         exit()
+        
     else:
 
         # Grille incomplète. Donc on va tenter, par récursivité, de résoudre le problème.
