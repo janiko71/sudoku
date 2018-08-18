@@ -6,10 +6,13 @@ grille = []
 nb_iter = 0
 FULL = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 DEBUG = False
-STOP = False
-NB_STOPS = 99
 
 
+'''
+    ========================================================
+      Définition d'une classe 'Grille de Sudoku'
+    ========================================================
+'''
 
 class Grille:
 
