@@ -1,4 +1,5 @@
 import operator
+import time
 import pprint
 import sys
 
@@ -329,9 +330,6 @@ def cherche(grille, ordre):
         print(ordre, "-->" ,len(ordre))
         grille.joli_print()
         print()
-    if (STOP):
-        if (nb_iter > NB_STOPS):
-            exit()
 
     if (grille.est_resolu()):
 
@@ -342,9 +340,9 @@ def cherche(grille, ordre):
         print('='*40)
         print()
         print(grille)
-        print()
-        exit()
-        
+
+        return
+
     else:
 
         # Grille incomplète. Donc on va tenter, par récursivité, de résoudre le problème.
@@ -415,10 +413,17 @@ def cherche(grille, ordre):
 DEFAULT_FILE_NAME = "1.txt"
 
 #
-# On demande en imput le nom du fichier, avec ou sans extension '.txt' (qui est ajoutée automatiquement)
+# On demande en imput (ou en argument de ligne de commande) le nom du fichier, avec ou sans extension '.txt' (qui est ajoutée automatiquement)
 #
+nb_arg = len(sys.argv) - 1
+print(nb_arg)
 
-file_name = input("Nom du fichier (grille), sans .txt [{}]: ".format(DEFAULT_FILE_NAME))
+if (nb_arg == 1):
+    file_name = sys.argv[1]
+else:    
+    file_name = input("Nom du fichier (grille), sans .txt [{}]: ".format(DEFAULT_FILE_NAME))
+
+# On rajoute le '.txt' pour les noms de fichiers n'en ayant pas.    
 if (len(file_name) == 0):
     file_name = str(DEFAULT_FILE_NAME)
 else:
@@ -458,7 +463,10 @@ if (grille.est_resolu()):
 #
 
 print('On démarre la recherche...\n')
+t0 = time.time()
 cherche(grille, ordre)
+t1 = time.time() 
+print("Problème résolu en {:6f} secondes.\n".format(t1 - t0))
 
 # Fin
 
