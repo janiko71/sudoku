@@ -193,8 +193,12 @@ def cherche(grille, ordre):
                                 print('grille    ', id(grille))
                                 print('new_grille', id(new_grille))
                             new_grille[ind] = num
-                            new_ordre = [] + ordre
-                            new_ordre.remove(ind)
+                            # Optimisation : au lieu de simplement retirer la case qu'on vient de remplir
+                            # dans la liste des cases à traiter, on la recalcule pour repartir sur une case
+                            # la plus simple possible (avec le moins de possibilités pour choisir son contenu)
+                            # new_ordre = [] + ordre
+                            # new_ordre.remove(ind)
+                            new_ordre = cherche_ordre(new_grille)
                             cherche(new_grille, new_ordre)
                     else:
                         # pas possible de caser num ?
