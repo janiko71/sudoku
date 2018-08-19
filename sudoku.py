@@ -302,7 +302,6 @@ def cherche(grille):
     # Paramètre en entrée : 
     #
     #   - La grille en cours de résolution.
-    #   - L'ordre des cases à examiner, afin de minimiser la profondeur de la recherche.
     #
     # Si la grille est remplie, on a terminé. On sort de la boucle infernale.
     #
@@ -356,7 +355,7 @@ def cherche(grille):
         # la recherche avec une grille qui aura donc une case de moins à trouver.
 
         ordre = grille.cherche_ordre()
-        
+
         if (DEBUG):
             print(ordre)
 
