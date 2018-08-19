@@ -294,19 +294,21 @@ def lecture_fichier(nom_fichier):
       Fonction globale de résolution de la grille de Sudoku
     =====================================================================
 '''
-def cherche(grille, ordre):
+def cherche(grille):
 
     # 
     # Fonction de recherche de solution.
     #
-    # Paramètres en entrée : 
+    # Paramètre en entrée : 
     #
-    #   - La grille en cours de résolution ;
+    #   - La grille en cours de résolution.
     #   - L'ordre des cases à examiner, afin de minimiser la profondeur de la recherche.
     #
     # Si la grille est remplie, on a terminé. On sort de la boucle infernale.
     #
-    # Sinon, on va prendre la grille en cours, et tenter de remplir les cases, dans l'ordre 
+    # Sinon, on calcule l'ordre des cases à examiner, afin de minimiser la profondeur de la recherche.
+    #
+    # On va ensuite prendre la grille en cours, et tenter de remplir les cases, dans l'ordre 
     # donné par la liste 'ordre'. On va commencer par la 1ère dans la liste,
     # puis on va relancer la fonction de recherche avec cette nouvelle grille.
     #
@@ -327,7 +329,6 @@ def cherche(grille, ordre):
         print(nb_iter, 'essais')
     if (DEBUG):
         print("({})".format(nb_iter))
-        print(ordre, "-->" ,len(ordre))
         grille.joli_print()
         print()
 
@@ -354,6 +355,11 @@ def cherche(grille, ordre):
         # recalcule l'ordre des cases à remplir (pour optimiser le calcul), et on relance 
         # la recherche avec une grille qui aura donc une case de moins à trouver.
 
+        ordre = grille.cherche_ordre()
+        
+        if (DEBUG):
+            print(ordre)
+
         for ind in ordre:
 
             # on examine chacune des cases de la liste 'ordre', pour voir si on peut les remplir.
@@ -374,16 +380,7 @@ def cherche(grille, ordre):
                             print('new_grille', id(new_grille))
                         new_grille.item[ind] = num
 
-                        # Optimisation : au lieu de simplement retirer la case qu'on vient de remplir
-                        # dans la liste des cases à traiter, on la recalcule pour repartir sur une case
-                        # la plus simple possible (avec le moins de possibilités pour choisir son contenu)
-                        # Code de la version précédente :
-                        #   new_ordre = [] + ordre
-                        #   new_ordre.remove(ind)
-                        # Cela rajoute une fonction de calcul (cherche_ordre) mais qui reste très simple,
-                        # et en pratique cela réduit DRASTIQUEMENT le nombre de possibilités testées par l'algo.
-                        new_ordre = new_grille.cherche_ordre()
-                        cherche(new_grille, new_ordre)
+                        cherche(new_grille)
 
                 else:
 
@@ -444,16 +441,6 @@ print()
 # Précaution devenue inutile après diverses optimisations
 #sys.setrecursionlimit(99999)
 
-#
-# On commence par calculer le 1er ordre de recherche, pour les cases vides
-#
-
-ordre = []
-ordre = grille.cherche_ordre()
-
-if (DEBUG):
-    print(ordre)
-
 if (grille.est_resolu()):
     print("La grille en entrée est déjà terminée ! Il n'y a rien à faire !")
     exit()
@@ -464,7 +451,7 @@ if (grille.est_resolu()):
 
 print('On démarre la recherche...\n')
 t0 = time.time()
-cherche(grille, ordre)
+cherche(grille)
 t1 = time.time() 
 print("Problème résolu en {:6f} secondes.\n".format(t1 - t0))
 
