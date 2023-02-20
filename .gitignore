@@ -1,2 +1,3 @@
 *.txt
 sudoku/*
+.vscode

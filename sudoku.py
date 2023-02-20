@@ -8,6 +8,10 @@ nb_iter = 0
 FULL = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 DEBUG = False
 
+global nb_solutions
+
+nb_solutions = 0
+
 
 '''
     ========================================================
@@ -203,6 +207,8 @@ class Grille:
         # Et un tri modifie la liste sur laquelle il s'opère...
         #
 
+        global nb_solutions
+
         # Vérification des lignes
         for i in range(0,9):
             lig = []
@@ -228,6 +234,7 @@ class Grille:
                 return False
 
         # Si on est ici, c'est que toutes les conditions sont remplies
+        nb_solutions = nb_solutions + 1
         return True
 
 
@@ -319,7 +326,8 @@ def cherche(grille):
     #      et de regarder la possibilité suivante pour la case précédente.
     #
 
-    global nb_iter
+    global nb_iter, nb_solutions
+
     nb_iter += 1
 
     # Affichage/débogage si besoin
@@ -336,7 +344,7 @@ def cherche(grille):
         # La grille est complète : on a gagné !
 
         print('='*40)
-        print('SOLUTION TROUVEE ({} itérations) :'.format(nb_iter))
+        print('SOLUTION #{} TROUVEE ({} itérations) :'.format(nb_solutions, nb_iter))
         print('='*40)
         print()
         print(grille)
