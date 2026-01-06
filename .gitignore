@@ -1,3 +1,4 @@
 *.txt
 sudoku/*
 .vscode
+app/__pycache__/
