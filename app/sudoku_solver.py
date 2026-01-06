@@ -39,6 +39,7 @@ from typing import Iterable, List, Tuple
 
 
 Grid = List[List[int]]
+DEFAULT_FILE_NAME = "1.txt"
 
 
 def _clean_values(lines: Iterable[str]) -> Grid:
@@ -251,7 +252,9 @@ def read_from_stdin() -> Grid:
         ========================================================
     """
 
-    print("Saisissez la grille (au moins 9 lignes). Laissez une ligne vide pour terminer.")
+    print(
+        "Saisissez la grille (au moins 9 lignes). Tapez simplement Entrée après la 9e ligne pour terminer."
+    )
 
     lines = []
 
@@ -293,8 +296,28 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    #
+    # Choix du mode d'entrée :
+    #   - argument CLI prioritaire s'il est fourni ;
+    #   - sinon on propose un nom de fichier (défaut 1.txt) ou 's' pour saisie.
+    #
+    input_path = args.path
+
+    if input_path is None:
+        user_choice = input(
+            f"Nom du fichier (défaut: {DEFAULT_FILE_NAME}). Tapez 's' pour saisie manuelle : "
+        ).strip()
+
+        if not user_choice:
+            input_path = DEFAULT_FILE_NAME
+        elif user_choice.lower() == "s":
+            input_path = None
+            print("Mode saisie manuelle. Appuyez sur Entrée après la 9e ligne pour terminer.")
+        else:
+            input_path = user_choice
+
     try:
-        grid = read_from_file(args.path) if args.path else read_from_stdin()
+        grid = read_from_file(input_path) if input_path is not None else read_from_stdin()
     except Exception as exc:  # pragma: no cover - CLI UX
         print(f"Erreur de lecture de la grille: {exc}", file=sys.stderr)
         return 1
